@@ -1,0 +1,37 @@
+[
+  {
+    "id": "1",
+    "title": "Giới thiệu Next.js 15",
+    "content": "Next.js 15 là phiên bản mới nhất với nhiều cải tiến đáng kể. Framework này hỗ trợ React 19, React Compiler, và nhiều tính năng rendering mới. Next.js giúp developers xây dựng ứng dụng web full-stack với hiệu suất cao và SEO tốt.",
+    "author": "Hoang Bao Minh",
+    "date": "2024-12-01"
+  },
+  {
+    "id": "2", 
+    "title": "Server-Side Rendering (SSR) vs Static Site Generation (SSG)",
+    "content": "SSR render HTML trên mỗi request, phù hợp cho dữ liệu cá nhân hóa. SSG tạo HTML tại build time, tốc độ nhanh nhất cho content tĩnh. ISR kết hợp cả hai - static với khả năng revalidate.",
+    "author": "Hoang Bao Minh",
+    "date": "2024-12-05"
+  },
+  {
+    "id": "3",
+    "title": "React Server Components - Tương lai của React",
+    "content": "Server Components chạy hoàn toàn trên server, không gửi JavaScript xuống client. Điều này giảm đáng kể bundle size và cải thiện performance. Client Components vẫn cần thiết cho interactivity.",
+    "author": "Hoang Bao Minh", 
+    "date": "2024-12-10"
+  },
+  {
+    "id": "4",
+    "title": "Data Fetching trong App Router",
+    "content": "App Router sử dụng extended fetch API với các options: cache: force-cache (static), cache: no-store (dynamic), next: { revalidate: 60 } (ISR). Server Components có thể fetch data trực tiếp không cần useEffect.",
+    "author": "Hoang Bao Minh",
+    "date": "2024-12-15"
+  },
+  {
+    "id": "5",
+    "title": "Tối ưu hóa Performance với next/image và next/font",
+    "content": "next/image tự động optimize hình ảnh, hỗ trợ lazy loading và prevent layout shift. next/font self-host Google Fonts, loại bỏ external requests và Flash of Unstyled Text (FOUT).",
+    "author": "Hoang Bao Minh",
+    "date": "2024-12-20"
+  }
+]

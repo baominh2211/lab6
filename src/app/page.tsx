@@ -1,192 +1,145 @@
-import Link from 'next/link';
-import AppWrapper from './AppWrapper';
-import { docSections, getArticlesBySection } from '@/data/docs';
-import { Icon, ArrowRight, Sparkles, BookOpen, Zap, Code } from '@/components/ui';
+import Link from 'next/link'
+import Image from 'next/image'
 
 export default function HomePage() {
+  const exercises = [
+    {
+      title: 'Exercise 1: Dynamic Blog (Pages Router + SSG)',
+      description: 'Blog system using getStaticProps và getStaticPaths với fallback behavior',
+      href: '/blog',
+      color: 'bg-blue-500',
+    },
+    {
+      title: 'Exercise 2: Dashboard (App Router + Hybrid)',
+      description: 'Server Components + Client Components với dark/light mode toggle',
+      href: '/dashboard',
+      color: 'bg-green-500',
+    },
+    {
+      title: 'Exercise 3: API Route & Middleware',
+      description: 'Protected API endpoint với x-api-key header và rate limiting',
+      href: '/api-test',
+      color: 'bg-purple-500',
+    },
+    {
+      title: 'Exercise 4: Image & Font Optimization',
+      description: 'next/image với lazy loading và next/font self-hosted',
+      href: '/optimization',
+      color: 'bg-orange-500',
+    },
+  ]
+
   return (
-    <AppWrapper>
+    <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-12 sm:py-20">
-        {/* Background */}
-        <div className="absolute inset-0 mesh-bg opacity-50" />
-        
-        <div className="relative max-w-4xl mx-auto text-center">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 mb-6">
-            <Sparkles size={16} className="text-primary-500" />
-            <span className="text-sm font-medium text-primary-700 dark:text-primary-300">
-              AI-Powered Documentation
-            </span>
-          </div>
-
-          {/* Title */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-surface-900 dark:text-white mb-6 leading-tight">
-            Next.js{' '}
-            <span className="gradient-text">Knowledge Base</span>
+      <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-20">
+        <div className="max-w-6xl mx-auto px-4 text-center">
+          <h1 className="text-5xl font-bold mb-4">
+            Lab 6: Advanced Next.js
           </h1>
-
-          {/* Subtitle */}
-          <p className="text-lg sm:text-xl text-surface-600 dark:text-surface-400 mb-8 max-w-2xl mx-auto">
-            Tài liệu Next.js toàn diện với AI Assistant. 
-            Tìm hiểu về SSR, SSG, ISR, App Router và nhiều hơn nữa.
+          <p className="text-xl text-slate-300 mb-2">
+            Module 6: Advanced Next.js Framework Architecture and Application
           </p>
-
-          {/* Actions */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/docs/getting-started/introduction"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 transition-all hover:-translate-y-0.5"
+          <p className="text-lg text-blue-400">
+            By Hoang Bao Minh | MSc. Tran Vinh Khiem
+          </p>
+          
+          <div className="mt-8 flex justify-center gap-4">
+            <Link 
+              href="/knowledge-base"
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition"
             >
-              <BookOpen size={20} />
-              Bắt đầu học
-              <ArrowRight size={18} />
+              🤖 AI Knowledge Base (Capstone)
             </Link>
             <Link
-              href="/docs/rendering/strategies"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-surface-100 dark:bg-surface-800 text-surface-700 dark:text-surface-300 font-medium hover:bg-surface-200 dark:hover:bg-surface-700 transition-colors"
+              href="/blog"
+              className="px-6 py-3 bg-slate-700 hover:bg-slate-600 rounded-lg font-semibold transition"
             >
-              <Zap size={20} />
-              Rendering Strategies
+              📚 View Exercises
             </Link>
-          </div>
-
-          {/* Author */}
-          <div className="mt-12 inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white dark:bg-surface-800 shadow-md">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center">
-              <span className="text-white text-xs font-bold">HBM</span>
-            </div>
-            <span className="text-sm text-surface-600 dark:text-surface-400">
-              Xây dựng bởi <strong className="text-surface-900 dark:text-white">Hoang Bao Minh</strong>
-            </span>
           </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section className="py-12">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          <FeatureCard
-            icon={<Sparkles size={24} />}
-            title="AI Assistant"
-            description="Hỏi đáp thông minh với RAG-powered AI. Nhận câu trả lời chính xác từ tài liệu."
-            gradient="from-purple-500 to-pink-500"
-          />
-          <FeatureCard
-            icon={<Zap size={24} />}
-            title="Rendering Strategies"
-            description="Hiểu sâu về SSR, SSG, ISR và CSR. Chọn strategy phù hợp cho từng use case."
-            gradient="from-amber-500 to-orange-500"
-          />
-          <FeatureCard
-            icon={<Code size={24} />}
-            title="Code Examples"
-            description="Ví dụ code thực tế, copy-paste ready. Từ cơ bản đến nâng cao."
-            gradient="from-cyan-500 to-blue-500"
-          />
-        </div>
-      </section>
-
-      {/* Documentation Sections */}
-      <section className="py-12">
+      {/* Rendering Strategies Overview */}
+      <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-bold text-surface-900 dark:text-white mb-8 text-center">
-            Khám phá tài liệu
-          </h2>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {docSections.sort((a, b) => a.order - b.order).map((section) => {
-              const articles = getArticlesBySection(section.id);
-              return (
-                <Link
-                  key={section.id}
-                  href={`/docs/${section.slug}`}
-                  className="group p-6 rounded-2xl bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-700 hover:border-primary-300 dark:hover:border-primary-600 hover:shadow-xl transition-all duration-300"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-xl bg-primary-50 dark:bg-primary-900/20 text-primary-500 group-hover:bg-primary-100 dark:group-hover:bg-primary-900/30 transition-colors">
-                      <Icon name={section.icon} size={24} />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-surface-900 dark:text-white mb-1 group-hover:text-primary-500 transition-colors">
-                        {section.title}
-                      </h3>
-                      <p className="text-sm text-surface-500 dark:text-surface-400 mb-3">
-                        {section.description}
-                      </p>
-                      <span className="text-xs text-surface-400">
-                        {articles.length} bài viết
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
+          <h2 className="text-3xl font-bold text-center mb-12">Rendering Strategies</h2>
+          
+          <div className="grid md:grid-cols-4 gap-6">
+            {[
+              { name: 'CSR', desc: 'Client-Side Rendering', use: 'Dashboards', color: 'border-red-500' },
+              { name: 'SSR', desc: 'Server-Side Rendering', use: 'Personalized Data', color: 'border-blue-500' },
+              { name: 'SSG', desc: 'Static Site Generation', use: 'Blogs, Docs', color: 'border-green-500' },
+              { name: 'ISR', desc: 'Incremental Static Regen', use: 'E-commerce, News', color: 'border-purple-500' },
+            ].map((strategy) => (
+              <div key={strategy.name} className={`p-6 bg-white rounded-xl shadow-lg border-t-4 ${strategy.color}`}>
+                <h3 className="text-2xl font-bold mb-2">{strategy.name}</h3>
+                <p className="text-gray-600 mb-2">{strategy.desc}</p>
+                <p className="text-sm text-gray-500">Best for: {strategy.use}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-12">
-        <div className="max-w-4xl mx-auto">
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary-500 to-primary-700 p-8 sm:p-12">
-            {/* Decorative elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
-            
-            <div className="relative text-center">
-              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
-                Bắt đầu với Next.js ngay hôm nay
-              </h2>
-              <p className="text-primary-100 mb-8 max-w-xl mx-auto">
-                Từ cài đặt đến deployment, chúng tôi sẽ hướng dẫn bạn từng bước xây dựng ứng dụng web hiện đại.
-              </p>
-              <Link
-                href="/docs/getting-started/introduction"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-white text-primary-600 font-semibold hover:bg-primary-50 transition-colors shadow-lg"
+      {/* Student Exercises */}
+      <section className="py-16 px-4 bg-slate-100">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12">Student Exercises</h2>
+          
+          <div className="grid md:grid-cols-2 gap-6">
+            {exercises.map((exercise, index) => (
+              <Link 
+                key={index} 
+                href={exercise.href}
+                className="block p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition group"
               >
-                Đọc tài liệu
-                <ArrowRight size={20} />
+                <div className={`w-12 h-12 ${exercise.color} rounded-lg flex items-center justify-center text-white font-bold mb-4`}>
+                  {index + 1}
+                </div>
+                <h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 transition">
+                  {exercise.title}
+                </h3>
+                <p className="text-gray-600">{exercise.description}</p>
               </Link>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-8 border-t border-surface-200 dark:border-surface-800">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="text-sm text-surface-500 dark:text-surface-400">
-            © 2024 Knowledge Base by Hoang Bao Minh. Built with Next.js 15.
-          </p>
+      {/* Capstone Project */}
+      <section className="py-16 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white">
+            <h2 className="text-3xl font-bold mb-4">🚀 Capstone Project: AI-Powered Knowledge Base</h2>
+            <p className="text-lg mb-6">
+              Documentation site với AI chatbot sử dụng RAG (Retrieval-Augmented Generation), 
+              Streaming UI, Server Actions, và Edge Middleware.
+            </p>
+            <div className="grid md:grid-cols-3 gap-4 mb-6">
+              <div className="bg-white/20 rounded-lg p-4">
+                <h4 className="font-bold">RAG System</h4>
+                <p className="text-sm">Vector database for smart retrieval</p>
+              </div>
+              <div className="bg-white/20 rounded-lg p-4">
+                <h4 className="font-bold">Streaming UI</h4>
+                <p className="text-sm">Real-time AI responses</p>
+              </div>
+              <div className="bg-white/20 rounded-lg p-4">
+                <h4 className="font-bold">Server Actions</h4>
+                <p className="text-sm">Direct server mutations</p>
+              </div>
+            </div>
+            <Link
+              href="/knowledge-base"
+              className="inline-block px-6 py-3 bg-white text-blue-600 rounded-lg font-bold hover:bg-slate-100 transition"
+            >
+              Try AI Knowledge Base →
+            </Link>
+          </div>
         </div>
-      </footer>
-    </AppWrapper>
-  );
-}
-
-function FeatureCard({
-  icon,
-  title,
-  description,
-  gradient,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  gradient: string;
-}) {
-  return (
-    <div className="group p-6 rounded-2xl bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-700 hover:shadow-xl transition-all duration-300">
-      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform`}>
-        {icon}
-      </div>
-      <h3 className="font-semibold text-surface-900 dark:text-white mb-2">
-        {title}
-      </h3>
-      <p className="text-sm text-surface-500 dark:text-surface-400">
-        {description}
-      </p>
+      </section>
     </div>
-  );
+  )
 }
