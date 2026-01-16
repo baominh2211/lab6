@@ -1,145 +1,362 @@
-import Link from 'next/link'
-import Image from 'next/image'
+'use client';
+
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import {
+  BookOpen,
+  LayoutDashboard,
+  Lock,
+  Image,
+  Brain,
+  ArrowRight,
+  Sparkles,
+  Zap,
+  Server,
+  Database,
+  Code2,
+  Layers,
+} from 'lucide-react';
+
+const exercises = [
+  {
+    id: 1,
+    title: 'Dynamic Blog System',
+    description: 'Routing & Static Site Generation (SSG) with getStaticProps and getStaticPaths',
+    icon: BookOpen,
+    href: '/blog',
+    color: 'primary',
+    features: ['File-based routing', 'Dynamic routes [slug]', 'SSG with fallback', 'ISR revalidation'],
+  },
+  {
+    id: 2,
+    title: 'Hybrid Dashboard',
+    description: 'App Router with Server Components and Client Components mixed architecture',
+    icon: LayoutDashboard,
+    href: '/dashboard',
+    color: 'secondary',
+    features: ['Server Components', 'Client Components', 'useState hooks', 'Real-time data'],
+  },
+  {
+    id: 3,
+    title: 'API & Middleware',
+    description: 'Secure API endpoints with custom middleware authentication',
+    icon: Lock,
+    href: '/api-demo',
+    color: 'tertiary',
+    features: ['Route Handlers', 'Middleware', 'API authentication', 'Rate limiting'],
+  },
+  {
+    id: 4,
+    title: 'Image & Font Optimization',
+    description: 'Core Web Vitals optimization with next/image and next/font',
+    icon: Image,
+    href: '/optimization',
+    color: 'purple',
+    features: ['next/image', 'next/font', 'Lazy loading', 'WebP conversion'],
+  },
+];
+
+const features = [
+  { icon: Server, label: 'SSR', desc: 'Server-Side Rendering' },
+  { icon: Database, label: 'SSG', desc: 'Static Site Generation' },
+  { icon: Zap, label: 'ISR', desc: 'Incremental Regeneration' },
+  { icon: Code2, label: 'RSC', desc: 'React Server Components' },
+  { icon: Layers, label: 'App Router', desc: 'Modern Routing System' },
+  { icon: Lock, label: 'Middleware', desc: 'Edge Functions' },
+];
+
+const colorMap = {
+  primary: {
+    bg: 'from-[var(--color-accent-primary)]/20 to-[var(--color-accent-primary)]/5',
+    border: 'hover:border-[var(--color-accent-primary)]/50',
+    icon: 'text-[var(--color-accent-primary)]',
+    iconBg: 'bg-[var(--color-accent-primary)]/10',
+  },
+  secondary: {
+    bg: 'from-[var(--color-accent-secondary)]/20 to-[var(--color-accent-secondary)]/5',
+    border: 'hover:border-[var(--color-accent-secondary)]/50',
+    icon: 'text-[var(--color-accent-secondary)]',
+    iconBg: 'bg-[var(--color-accent-secondary)]/10',
+  },
+  tertiary: {
+    bg: 'from-[var(--color-accent-tertiary)]/20 to-[var(--color-accent-tertiary)]/5',
+    border: 'hover:border-[var(--color-accent-tertiary)]/50',
+    icon: 'text-[var(--color-accent-tertiary)]',
+    iconBg: 'bg-[var(--color-accent-tertiary)]/10',
+  },
+  purple: {
+    bg: 'from-[var(--color-accent-purple)]/20 to-[var(--color-accent-purple)]/5',
+    border: 'hover:border-[var(--color-accent-purple)]/50',
+    icon: 'text-[var(--color-accent-purple)]',
+    iconBg: 'bg-[var(--color-accent-purple)]/10',
+  },
+};
 
 export default function HomePage() {
-  const exercises = [
-    {
-      title: 'Exercise 1: Dynamic Blog (Pages Router + SSG)',
-      description: 'Blog system using getStaticProps và getStaticPaths với fallback behavior',
-      href: '/blog',
-      color: 'bg-blue-500',
-    },
-    {
-      title: 'Exercise 2: Dashboard (App Router + Hybrid)',
-      description: 'Server Components + Client Components với dark/light mode toggle',
-      href: '/dashboard',
-      color: 'bg-green-500',
-    },
-    {
-      title: 'Exercise 3: API Route & Middleware',
-      description: 'Protected API endpoint với x-api-key header và rate limiting',
-      href: '/api-test',
-      color: 'bg-purple-500',
-    },
-    {
-      title: 'Exercise 4: Image & Font Optimization',
-      description: 'next/image với lazy loading và next/font self-hosted',
-      href: '/optimization',
-      color: 'bg-orange-500',
-    },
-  ]
-
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-20">
-        <div className="max-w-6xl mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold mb-4">
-            Lab 6: Advanced Next.js
-          </h1>
-          <p className="text-xl text-slate-300 mb-2">
-            Module 6: Advanced Next.js Framework Architecture and Application
-          </p>
-          <p className="text-lg text-blue-400">
-            By Hoang Bao Minh | MSc. Tran Vinh Khiem
-          </p>
-          
-          <div className="mt-8 flex justify-center gap-4">
-            <Link 
-              href="/knowledge-base"
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition"
+      <section className="relative py-20 lg:py-32 overflow-hidden">
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[var(--color-accent-primary)]/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[var(--color-accent-secondary)]/20 rounded-full blur-3xl" />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center max-w-4xl mx-auto"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-bg-tertiary)] border border-[var(--color-border)] mb-8"
             >
-              🤖 AI Knowledge Base (Capstone)
-            </Link>
-            <Link
-              href="/blog"
-              className="px-6 py-3 bg-slate-700 hover:bg-slate-600 rounded-lg font-semibold transition"
-            >
-              📚 View Exercises
-            </Link>
-          </div>
-        </div>
-      </section>
+              <Sparkles className="w-4 h-4 text-[var(--color-accent-primary)]" />
+              <span className="text-sm font-medium">Module 6 - MSc. Tran Vinh Khiem</span>
+            </motion.div>
 
-      {/* Rendering Strategies Overview */}
-      <section className="py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Rendering Strategies</h2>
-          
-          <div className="grid md:grid-cols-4 gap-6">
-            {[
-              { name: 'CSR', desc: 'Client-Side Rendering', use: 'Dashboards', color: 'border-red-500' },
-              { name: 'SSR', desc: 'Server-Side Rendering', use: 'Personalized Data', color: 'border-blue-500' },
-              { name: 'SSG', desc: 'Static Site Generation', use: 'Blogs, Docs', color: 'border-green-500' },
-              { name: 'ISR', desc: 'Incremental Static Regen', use: 'E-commerce, News', color: 'border-purple-500' },
-            ].map((strategy) => (
-              <div key={strategy.name} className={`p-6 bg-white rounded-xl shadow-lg border-t-4 ${strategy.color}`}>
-                <h3 className="text-2xl font-bold mb-2">{strategy.name}</h3>
-                <p className="text-gray-600 mb-2">{strategy.desc}</p>
-                <p className="text-sm text-gray-500">Best for: {strategy.use}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 leading-tight">
+              Master{' '}
+              <span className="gradient-text animate-gradient bg-gradient-to-r from-[var(--color-accent-primary)] via-[var(--color-accent-secondary)] to-[var(--color-accent-purple)]">
+                Next.js 15
+              </span>
+              <br />
+              Framework Architecture
+            </h1>
 
-      {/* Student Exercises */}
-      <section className="py-16 px-4 bg-slate-100">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Student Exercises</h2>
-          
-          <div className="grid md:grid-cols-2 gap-6">
-            {exercises.map((exercise, index) => (
-              <Link 
-                key={index} 
-                href={exercise.href}
-                className="block p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition group"
-              >
-                <div className={`w-12 h-12 ${exercise.color} rounded-lg flex items-center justify-center text-white font-bold mb-4`}>
-                  {index + 1}
-                </div>
-                <h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 transition">
-                  {exercise.title}
-                </h3>
-                <p className="text-gray-600">{exercise.description}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Capstone Project */}
-      <section className="py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white">
-            <h2 className="text-3xl font-bold mb-4">🚀 Capstone Project: AI-Powered Knowledge Base</h2>
-            <p className="text-lg mb-6">
-              Documentation site với AI chatbot sử dụng RAG (Retrieval-Augmented Generation), 
-              Streaming UI, Server Actions, và Edge Middleware.
+            <p className="text-lg sm:text-xl text-[var(--color-text-secondary)] mb-10 max-w-2xl mx-auto">
+              A comprehensive hands-on demonstration covering SSR, SSG, ISR, App Router, 
+              Server Components, API Routes, Middleware, and AI-powered features.
             </p>
-            <div className="grid md:grid-cols-3 gap-4 mb-6">
-              <div className="bg-white/20 rounded-lg p-4">
-                <h4 className="font-bold">RAG System</h4>
-                <p className="text-sm">Vector database for smart retrieval</p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Link
+                  href="/blog"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[var(--color-accent-primary)] to-[var(--color-accent-secondary)] text-[var(--color-bg-primary)] font-semibold hover:shadow-[var(--shadow-glow)] transition-all"
+                >
+                  Start Exercises
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Link
+                  href="/knowledge-base"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--color-bg-tertiary)] border border-[var(--color-border)] font-semibold hover:border-[var(--color-accent-secondary)] transition-all"
+                >
+                  <Brain className="w-5 h-5" />
+                  AI Knowledge Base
+                </Link>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="flex flex-wrap justify-center gap-3 mt-16"
+          >
+            {features.map((feature, index) => (
+              <motion.div
+                key={feature.label}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.5 + index * 0.05 }}
+                whileHover={{ scale: 1.05, y: -2 }}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:border-[var(--color-accent-primary)]/50 transition-all cursor-default"
+              >
+                <feature.icon className="w-4 h-4 text-[var(--color-accent-primary)]" />
+                <span className="text-sm font-medium">{feature.label}</span>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Exercises Section */}
+      <section className="py-20 bg-[var(--color-bg-secondary)]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              4 Hands-on <span className="gradient-text">Exercises</span>
+            </h2>
+            <p className="text-[var(--color-text-secondary)] max-w-2xl mx-auto">
+              Each exercise reinforces core Next.js concepts from basic routing to advanced optimization.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {exercises.map((exercise, index) => {
+              const colors = colorMap[exercise.color as keyof typeof colorMap];
+              return (
+                <motion.div
+                  key={exercise.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <Link href={exercise.href}>
+                    <motion.div
+                      whileHover={{ y: -5 }}
+                      className={`h-full p-6 rounded-2xl bg-gradient-to-br ${colors.bg} border border-[var(--color-border)] ${colors.border} transition-all group`}
+                    >
+                      <div className="flex items-start gap-4 mb-4">
+                        <div className={`p-3 rounded-xl ${colors.iconBg}`}>
+                          <exercise.icon className={`w-6 h-6 ${colors.icon}`} />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-xs font-medium text-[var(--color-text-muted)]">
+                              Exercise {exercise.id}
+                            </span>
+                          </div>
+                          <h3 className="text-xl font-bold mb-2 group-hover:text-[var(--color-accent-primary)] transition-colors">
+                            {exercise.title}
+                          </h3>
+                          <p className="text-[var(--color-text-secondary)] text-sm">
+                            {exercise.description}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {exercise.features.map((feature) => (
+                          <span
+                            key={feature}
+                            className="px-3 py-1 text-xs rounded-full bg-[var(--color-bg-primary)]/50 text-[var(--color-text-secondary)]"
+                          >
+                            {feature}
+                          </span>
+                        ))}
+                      </div>
+                    </motion.div>
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* AI Project Section */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[var(--color-accent-primary)]/20 via-[var(--color-accent-secondary)]/10 to-[var(--color-accent-purple)]/20 border border-[var(--color-border)] p-8 md:p-12"
+          >
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--color-accent-primary)]/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-[var(--color-accent-purple)]/10 rounded-full blur-3xl" />
+
+            <div className="relative z-10 flex flex-col lg:flex-row items-center gap-8">
+              <div className="flex-1">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-accent-purple)]/20 text-[var(--color-accent-purple)] text-sm font-medium mb-4">
+                  <Sparkles className="w-4 h-4" />
+                  Small Project
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+                  AI-Powered <span className="gradient-text">Knowledge Base</span>
+                </h2>
+                <p className="text-[var(--color-text-secondary)] mb-6 max-w-xl">
+                  A complete documentation site with AI-powered search. Uses RAG (Retrieval-Augmented Generation), 
+                  streaming UI for real-time responses, Server Actions, and hybrid rendering for optimal SEO.
+                </p>
+                <div className="flex flex-wrap gap-3 mb-8">
+                  {['RAG Search', 'Streaming UI', 'Server Actions', 'Hybrid Rendering', 'Rate Limiting'].map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-3 py-1 text-sm rounded-full bg-[var(--color-bg-primary)]/50 border border-[var(--color-border)]"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                  <Link
+                    href="/knowledge-base"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[var(--color-accent-secondary)] to-[var(--color-accent-purple)] text-white font-semibold hover:shadow-[var(--shadow-glow-blue)] transition-all"
+                  >
+                    <Brain className="w-5 h-5" />
+                    Explore Knowledge Base
+                    <ArrowRight className="w-5 h-5" />
+                  </Link>
+                </motion.div>
               </div>
-              <div className="bg-white/20 rounded-lg p-4">
-                <h4 className="font-bold">Streaming UI</h4>
-                <p className="text-sm">Real-time AI responses</p>
-              </div>
-              <div className="bg-white/20 rounded-lg p-4">
-                <h4 className="font-bold">Server Actions</h4>
-                <p className="text-sm">Direct server mutations</p>
+              <div className="flex-shrink-0">
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                  className="w-48 h-48 rounded-3xl bg-gradient-to-br from-[var(--color-accent-primary)] to-[var(--color-accent-secondary)] flex items-center justify-center shadow-2xl"
+                >
+                  <Brain className="w-24 h-24 text-[var(--color-bg-primary)]" />
+                </motion.div>
               </div>
             </div>
-            <Link
-              href="/knowledge-base"
-              className="inline-block px-6 py-3 bg-white text-blue-600 rounded-lg font-bold hover:bg-slate-100 transition"
-            >
-              Try AI Knowledge Base →
-            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Rendering Strategies Table */}
+      <section className="py-20 bg-[var(--color-bg-secondary)]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              Rendering <span className="gradient-text">Strategies</span> Comparison
+            </h2>
+            <p className="text-[var(--color-text-secondary)] max-w-2xl mx-auto">
+              Understanding when to use each strategy is key to building performant applications.
+            </p>
+          </motion.div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[600px] bg-[var(--color-bg-card)] rounded-2xl overflow-hidden border border-[var(--color-border)]">
+              <thead>
+                <tr className="bg-[var(--color-bg-tertiary)]">
+                  <th className="px-6 py-4 text-left font-semibold">Feature</th>
+                  <th className="px-6 py-4 text-center font-semibold text-[var(--color-accent-tertiary)]">CSR</th>
+                  <th className="px-6 py-4 text-center font-semibold text-[var(--color-accent-secondary)]">SSR</th>
+                  <th className="px-6 py-4 text-center font-semibold text-[var(--color-accent-primary)]">SSG</th>
+                  <th className="px-6 py-4 text-center font-semibold text-[var(--color-accent-purple)]">ISR</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[var(--color-border)]">
+                {[
+                  ['Render Timing', 'Browser', 'Server (Request)', 'Build Time', 'Build + Background'],
+                  ['SEO Quality', '❌ Low', '✅ High', '✅ High', '✅ High'],
+                  ['Server Load', '✅ Minimal', '❌ High', '✅ None', '✅ Low'],
+                  ['Data Freshness', '✅ Real-time', '✅ Real-time', '❌ Stale', '⚡ Configurable'],
+                  ['Best For', 'Dashboards', 'Personalized', 'Blogs, Docs', 'E-commerce'],
+                ].map((row, i) => (
+                  <tr key={i} className="hover:bg-[var(--color-bg-tertiary)]/50 transition-colors">
+                    {row.map((cell, j) => (
+                      <td key={j} className={`px-6 py-4 ${j === 0 ? 'font-medium' : 'text-center text-sm'}`}>
+                        {cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
     </div>
-  )
+  );
 }

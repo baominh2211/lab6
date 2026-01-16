@@ -1,0 +1,64 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "title": "Understanding Server-Side Rendering in Next.js",
+      "slug": "understanding-ssr-nextjs",
+      "excerpt": "Dive deep into how SSR works in Next.js and when to use it for optimal performance.",
+      "content": "Server-Side Rendering (SSR) is a powerful technique that allows your React components to be rendered on the server before being sent to the client. This approach offers several advantages including improved SEO, faster initial page loads, and better performance on low-powered devices.\n\nIn Next.js, SSR is implemented through the getServerSideProps function in the Pages Router, or by using the 'no-store' cache option in the App Router. When a user requests a page, the server executes the React component tree, fetches necessary data, and generates a fully populated HTML document.\n\nThe key benefit of SSR is that search engines and social media bots receive fully rendered content, making your pages more discoverable. However, it comes with trade-offs: the Time to First Byte (TTFB) is slower because the server must complete data fetching and rendering before sending any bytes.\n\nSSR is ideal for pages that require personalized data, real-time information, or when SEO is critical. For content that doesn't change frequently, consider using Static Site Generation (SSG) or Incremental Static Regeneration (ISR) instead.",
+      "author": "Tran Vinh Khiem",
+      "date": "2024-01-15",
+      "category": "Next.js",
+      "readTime": "5 min",
+      "image": "https://picsum.photos/seed/ssr/800/400"
+    },
+    {
+      "id": "2",
+      "title": "Mastering Static Site Generation with Next.js",
+      "slug": "mastering-ssg-nextjs",
+      "excerpt": "Learn how to leverage SSG for blazing-fast websites with optimal SEO performance.",
+      "content": "Static Site Generation (SSG) represents the pinnacle of performance for content that doesn't change frequently. In this model, HTML pages are generated at build time, resulting in the fastest possible First Contentful Paint (FCP) and Time to First Byte (TTFB).\n\nWhen you run 'next build', Next.js fetches data and renders your components to static HTML files. These pre-computed files are typically deployed to a Content Delivery Network (CDN), allowing edge servers to deliver content instantly without any server-side computation.\n\nIn the Pages Router, SSG is implemented using getStaticProps and getStaticPaths. The getStaticProps function runs at build time and returns props that are passed to your page component. For dynamic routes, getStaticPaths defines which paths should be generated.\n\nThe fallback property in getStaticPaths is crucial: 'false' returns 404 for unknown paths, 'true' shows a loading state while generating, and 'blocking' waits for generation to complete before responding.\n\nSSG is perfect for blogs, documentation sites, marketing pages, and e-commerce product listings. The main limitation is that content can become stale - if your database changes, you need to rebuild and redeploy.",
+      "author": "Tran Vinh Khiem",
+      "date": "2024-01-20",
+      "category": "Performance",
+      "readTime": "6 min",
+      "image": "https://picsum.photos/seed/ssg/800/400"
+    },
+    {
+      "id": "3",
+      "title": "The Power of Incremental Static Regeneration",
+      "slug": "power-of-isr",
+      "excerpt": "Discover how ISR combines the best of static and dynamic rendering for modern web apps.",
+      "content": "Incremental Static Regeneration (ISR) is a hybrid innovation that addresses the staleness limitation of Static Site Generation. It allows you to update static pages after the site has been built and deployed, without requiring a full site rebuild.\n\nISR works on a 'stale-while-revalidate' pattern. When you add a 'revalidate' property to getStaticProps (e.g., revalidate: 60), Next.js considers the page 'fresh' for that duration. After the window expires, the next request triggers a background regeneration while still serving the cached version.\n\nHere's the flow: User A requests a page and receives the cached version. If the revalidation period has elapsed, Next.js triggers background regeneration. User A still sees the old version, but once regeneration succeeds, the cache is updated. User B then receives the fresh version.\n\nFor more immediate updates, On-Demand ISR allows external events (like CMS webhooks) to trigger cache purges for specific URLs. Using res.revalidate('/path-to-page') in an API route enables instant updates when content changes.\n\nISR is perfect for e-commerce sites, news platforms, and any application where content updates regularly but doesn't require real-time accuracy. It combines CDN performance with dynamic content freshness.",
+      "author": "Tran Vinh Khiem",
+      "date": "2024-02-01",
+      "category": "Architecture",
+      "readTime": "7 min",
+      "image": "https://picsum.photos/seed/isr/800/400"
+    },
+    {
+      "id": "4",
+      "title": "React Server Components: The Future of React",
+      "slug": "react-server-components-future",
+      "excerpt": "Explore how RSC revolutionizes the way we build React applications in Next.js 13+.",
+      "content": "React Server Components (RSC) represent a paradigm shift in how we build React applications. Introduced with Next.js 13's App Router, RSC allows components to render exclusively on the server, reducing the JavaScript payload sent to the client.\n\nServer Components are the default in the App Router. They can access the database, filesystem, and private environment variables directly. However, they cannot use hooks like useState or useEffect, nor can they attach event listeners. The output is a special JSON format (RSC Payload) that the client uses to reconstruct the DOM.\n\nClient Components, marked with 'use client' at the top of the file, handle interactivity and browser APIs. They're prerendered on the server for initial HTML, then hydrated on the client. Importantly, any component imported into a Client Component becomes part of the client bundle.\n\nThe key to performance is composition: use Server Components for data fetching and layout, and Client Components only for interactive elements like buttons and forms. Server Components can be passed as children to Client Components, preserving their server-only nature.\n\nThis architecture addresses the 'waterfall' problem of data fetching and dramatically reduces the JavaScript needed for initial page loads, resulting in faster, more efficient applications.",
+      "author": "Tran Vinh Khiem",
+      "date": "2024-02-10",
+      "category": "React",
+      "readTime": "8 min",
+      "image": "https://picsum.photos/seed/rsc/800/400"
+    },
+    {
+      "id": "5",
+      "title": "Building APIs with Next.js Route Handlers",
+      "slug": "building-apis-route-handlers",
+      "excerpt": "Learn to create powerful RESTful APIs using Next.js as a full-stack framework.",
+      "content": "Next.js serves as a full-stack framework, enabling the creation of RESTful endpoints alongside your frontend code. The approach differs between the Pages Router and App Router, but both provide powerful capabilities.\n\nIn the Pages Router, API routes live in pages/api/. Each file exports a default handler function that receives request (req) and response (res) objects similar to Express.js. You can check req.method to handle different HTTP methods.\n\nThe App Router introduces Route Handlers in app/api/.../route.ts. Instead of a default export, you export named functions for each HTTP method: GET, POST, PUT, DELETE, etc. These use standard Web APIs (Request, Response) rather than Node.js objects.\n\nRoute Handlers support several advanced features: GET requests are cached by default (unless using dynamic functions like cookies or headers), you can use NextResponse for convenient response creation, and streaming is supported for large responses.\n\nCommon use cases include: masking third-party APIs to hide API keys, handling form submissions, creating webhooks for external services, and building full CRUD operations for your database.\n\nRemember that API routes run only on the server, so you can safely include database queries, API keys, and other sensitive operations without exposing them to the client.",
+      "author": "Tran Vinh Khiem",
+      "date": "2024-02-15",
+      "category": "API",
+      "readTime": "6 min",
+      "image": "https://picsum.photos/seed/api/800/400"
+    }
+  ]
+}

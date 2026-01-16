@@ -1,0 +1,74 @@
+{
+  "documents": [
+    {
+      "id": "doc-1",
+      "title": "Introduction to Next.js",
+      "category": "Getting Started",
+      "content": "Next.js is a React framework that enables server-side rendering, static site generation, and hybrid rendering strategies. It provides a production-ready infrastructure including robust routing systems, build-time optimizations, API handling, and a flexible rendering engine. Next.js shifts the paradigm from 'how to render a component' to 'where and when to render a component'.",
+      "keywords": ["nextjs", "react", "framework", "ssr", "ssg"]
+    },
+    {
+      "id": "doc-2",
+      "title": "Rendering Strategies",
+      "category": "Core Concepts",
+      "content": "Next.js supports multiple rendering strategies: Client-Side Rendering (CSR) where content is rendered in the browser, Server-Side Rendering (SSR) where each request triggers server rendering, Static Site Generation (SSG) where pages are pre-rendered at build time, and Incremental Static Regeneration (ISR) which allows updating static pages without full rebuilds. Choose based on your content freshness needs and SEO requirements.",
+      "keywords": ["csr", "ssr", "ssg", "isr", "rendering"]
+    },
+    {
+      "id": "doc-3",
+      "title": "File-Based Routing",
+      "category": "Routing",
+      "content": "Next.js uses the filesystem as the routing API. In the Pages Router, files in pages/ become routes automatically. In the App Router, folders in app/ represent route segments, with page.tsx files making segments publicly accessible. Dynamic routes use bracket notation [id], catch-all routes use [...slug], and route groups use (folder) for organization without affecting URLs.",
+      "keywords": ["routing", "pages", "app router", "dynamic routes"]
+    },
+    {
+      "id": "doc-4",
+      "title": "Data Fetching Methods",
+      "category": "Data Fetching",
+      "content": "Pages Router uses getStaticProps for build-time data, getStaticPaths for dynamic static routes, and getServerSideProps for request-time data. App Router uses the extended fetch API with cache options: 'force-cache' for static data, 'no-store' for dynamic data, and { next: { revalidate: seconds } } for ISR. Server Components can fetch data directly without these patterns.",
+      "keywords": ["getStaticProps", "getServerSideProps", "fetch", "data fetching"]
+    },
+    {
+      "id": "doc-5",
+      "title": "Server Components vs Client Components",
+      "category": "App Router",
+      "content": "Server Components (default in App Router) render on the server, can access databases and filesystems directly, but cannot use hooks or event listeners. Client Components (marked with 'use client') handle interactivity and browser APIs. Best practice: use Server Components for data fetching and layouts, Client Components only for interactive elements.",
+      "keywords": ["server components", "client components", "use client", "rsc"]
+    },
+    {
+      "id": "doc-6",
+      "title": "API Routes and Route Handlers",
+      "category": "API Development",
+      "content": "Create APIs in Next.js using pages/api/ (Pages Router) or app/api/route.ts (App Router). Pages Router exports a default handler function. App Router exports named functions (GET, POST, DELETE) using Web APIs. Both run server-side only, safe for database queries and API keys. Route Handlers support caching, streaming, and middleware integration.",
+      "keywords": ["api routes", "route handlers", "rest api", "backend"]
+    },
+    {
+      "id": "doc-7",
+      "title": "Image Optimization",
+      "category": "Optimization",
+      "content": "The next/image component prevents Cumulative Layout Shift by requiring width/height, converts images to modern formats (WebP, AVIF), implements lazy loading for off-screen images, and requires security configuration for remote images in next.config.js. Always use next/image instead of HTML img tags for optimal Core Web Vitals.",
+      "keywords": ["image optimization", "next/image", "webp", "lazy loading"]
+    },
+    {
+      "id": "doc-8",
+      "title": "Font Optimization",
+      "category": "Optimization",
+      "content": "next/font eliminates layout shift from font loading by self-hosting Google Fonts at build time and using CSS size-adjust to match fallback font metrics. Import fonts from next/font/google, configure options like weight and subsets, then apply the className to your elements. No external DNS lookups needed.",
+      "keywords": ["fonts", "next/font", "google fonts", "layout shift"]
+    },
+    {
+      "id": "doc-9",
+      "title": "Middleware",
+      "category": "Advanced",
+      "content": "Middleware runs before requests are completed, enabling authentication, redirects, rewrites, and header modifications. Create middleware.ts in project root. Use NextResponse for responses. Matcher config limits which routes trigger middleware. Middleware runs on the Edge Runtime for global low-latency execution.",
+      "keywords": ["middleware", "authentication", "edge runtime", "redirects"]
+    },
+    {
+      "id": "doc-10",
+      "title": "Environment Variables",
+      "category": "Configuration",
+      "content": "Next.js supports .env files (.env.local, .env.production). Variables are server-only by default. Prefix with NEXT_PUBLIC_ to expose to the browser. NEXT_PUBLIC_ variables are inlined during build. Never expose sensitive keys to the client. Use process.env.VARIABLE_NAME to access values.",
+      "keywords": ["environment variables", "env", "configuration", "secrets"]
+    }
+  ]
+}

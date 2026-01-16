@@ -1,230 +1,305 @@
-/**
- * Exercise 4: Image & Font Optimization
- * 
- * This page demonstrates:
- * - next/image component vs standard <img>
- * - Automatic image optimization
- * - Layout shift prevention
- * - next/font optimization (already in layout.tsx)
- */
+'use client';
 
-import Image from 'next/image'
+import { useState } from 'react';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import {
+  Image as ImageIcon,
+  Type,
+  Zap,
+  AlertTriangle,
+  CheckCircle,
+  Sparkles,
+  Eye,
+  Gauge,
+} from 'lucide-react';
 
 export default function OptimizationPage() {
-  // Demo image URL (using placeholder since we can't add real images)
-  const imageUrl = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&h=800'
-  
+  const [showOptimized, setShowOptimized] = useState(true);
+
   return (
-    <div className="min-h-screen bg-slate-50 py-12">
-      <div className="max-w-5xl mx-auto px-4">
+    <div className="min-h-screen py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8">
-          <span className="inline-block px-4 py-2 bg-orange-100 text-orange-800 rounded-full text-sm font-medium mb-4">
-            Exercise 4: Image & Font Optimization
-          </span>
-          <h1 className="text-3xl font-bold mb-2">🖼️ Optimization Demo</h1>
-          <p className="text-gray-600">
-            So sánh <code className="bg-gray-200 px-2 py-1 rounded">&lt;img&gt;</code> vs{' '}
-            <code className="bg-gray-200 px-2 py-1 rounded">next/image</code>
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-accent-purple)]/10 border border-[var(--color-accent-purple)]/30 mb-6">
+            <Sparkles className="w-4 h-4 text-[var(--color-accent-purple)]" />
+            <span className="text-sm font-medium text-[var(--color-accent-purple)]">
+              Exercise 4: Optimization
+            </span>
+          </div>
+
+          <h1 className="text-4xl font-bold mb-4">
+            Image & Font <span className="gradient-text">Optimization</span>
+          </h1>
+          <p className="text-[var(--color-text-secondary)] max-w-2xl mx-auto">
+            Improve Core Web Vitals with next/image and next/font. See the difference between
+            optimized and unoptimized assets in real-time.
           </p>
         </div>
 
-        {/* Comparison Grid */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          {/* Standard img tag */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="p-4 bg-red-500 text-white">
-              <h3 className="font-bold">❌ Standard &lt;img&gt; tag</h3>
+        {/* Core Web Vitals Info */}
+        <div className="grid md:grid-cols-3 gap-4 mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-[var(--color-bg-card)] rounded-xl p-4 border border-[var(--color-border)]"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 rounded-lg bg-[var(--color-accent-primary)]/10">
+                <Gauge className="w-5 h-5 text-[var(--color-accent-primary)]" />
+              </div>
+              <span className="text-lg font-bold text-[var(--color-accent-primary)]">LCP</span>
             </div>
-            <div className="p-4">
-              <div className="bg-slate-200 rounded-lg overflow-hidden mb-4">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
-                  src={imageUrl}
-                  alt="Unoptimized"
-                  className="w-full"
-                />
+            <p className="font-medium">Largest Contentful Paint</p>
+            <p className="text-sm text-[var(--color-text-secondary)]">Loading performance</p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="bg-[var(--color-bg-card)] rounded-xl p-4 border border-[var(--color-border)]"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 rounded-lg bg-[var(--color-accent-secondary)]/10">
+                <Zap className="w-5 h-5 text-[var(--color-accent-secondary)]" />
               </div>
-              <div className="space-y-2 text-sm">
-                <p className="flex items-center gap-2">
-                  <span className="text-red-500">❌</span>
-                  No automatic optimization
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-red-500">❌</span>
-                  Causes Layout Shift (CLS)
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-red-500">❌</span>
-                  Full size download
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-red-500">❌</span>
-                  No lazy loading by default
-                </p>
+              <span className="text-lg font-bold text-[var(--color-accent-secondary)]">FID</span>
+            </div>
+            <p className="font-medium">First Input Delay</p>
+            <p className="text-sm text-[var(--color-text-secondary)]">Interactivity</p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-[var(--color-bg-card)] rounded-xl p-4 border border-[var(--color-border)]"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 rounded-lg bg-[var(--color-accent-purple)]/10">
+                <Eye className="w-5 h-5 text-[var(--color-accent-purple)]" />
               </div>
+              <span className="text-lg font-bold text-[var(--color-accent-purple)]">CLS</span>
+            </div>
+            <p className="font-medium">Cumulative Layout Shift</p>
+            <p className="text-sm text-[var(--color-text-secondary)]">Visual stability</p>
+          </motion.div>
+        </div>
+
+        {/* Image Comparison */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-[var(--color-bg-card)] rounded-2xl p-6 border border-[var(--color-border)] mb-8"
+        >
+          <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-xl bg-[var(--color-accent-purple)]/10">
+                <ImageIcon className="w-6 h-6 text-[var(--color-accent-purple)]" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold">Image Optimization</h2>
+                <p className="text-sm text-[var(--color-text-secondary)]">Compare optimized vs standard images</p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setShowOptimized(true)}
+                className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                  showOptimized
+                    ? 'bg-[var(--color-accent-primary)] text-[var(--color-bg-primary)]'
+                    : 'bg-[var(--color-bg-tertiary)] hover:bg-[var(--color-border)]'
+                }`}
+              >
+                next/image
+              </button>
+              <button
+                onClick={() => setShowOptimized(false)}
+                className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                  !showOptimized
+                    ? 'bg-[var(--color-accent-tertiary)] text-white'
+                    : 'bg-[var(--color-bg-tertiary)] hover:bg-[var(--color-border)]'
+                }`}
+              >
+                Standard img
+              </button>
             </div>
           </div>
 
-          {/* next/image */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="p-4 bg-green-500 text-white">
-              <h3 className="font-bold">✅ next/image Component</h3>
-            </div>
-            <div className="p-4">
-              <div className="bg-slate-200 rounded-lg overflow-hidden mb-4 relative aspect-video">
+          {/* Image Display */}
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Optimized with next/image */}
+            <div className={`rounded-xl overflow-hidden border-2 transition-all ${
+              showOptimized ? 'border-[var(--color-accent-primary)]' : 'border-transparent'
+            }`}>
+              <div className="relative h-64">
                 <Image
-                  src={imageUrl}
+                  src="https://picsum.photos/seed/nextjs-demo/800/400"
                   alt="Optimized with next/image"
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  priority
                 />
               </div>
-              <div className="space-y-2 text-sm">
-                <p className="flex items-center gap-2">
-                  <span className="text-green-500">✅</span>
-                  Auto WebP/AVIF conversion
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-green-500">✅</span>
-                  Prevents Layout Shift
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-green-500">✅</span>
-                  Responsive srcset
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-green-500">✅</span>
-                  Lazy loading by default
-                </p>
+              <div className="p-4 bg-[var(--color-bg-tertiary)]">
+                <div className="flex items-center gap-2 mb-2">
+                  <CheckCircle className="w-5 h-5 text-[var(--color-accent-primary)]" />
+                  <span className="font-medium">next/image Component</span>
+                </div>
+                <ul className="text-sm text-[var(--color-text-secondary)] space-y-1">
+                  <li>✓ Automatic WebP/AVIF conversion</li>
+                  <li>✓ Lazy loading by default</li>
+                  <li>✓ Blur placeholder prevents CLS</li>
+                  <li>✓ Responsive sizes attribute</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Standard img tag */}
+            <div className={`rounded-xl overflow-hidden border-2 transition-all ${
+              !showOptimized ? 'border-[var(--color-accent-tertiary)]' : 'border-transparent'
+            }`}>
+              <div className="relative h-64">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="https://picsum.photos/seed/nextjs-demo/800/400"
+                  alt="Standard img tag"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-4 bg-[var(--color-bg-tertiary)]">
+                <div className="flex items-center gap-2 mb-2">
+                  <AlertTriangle className="w-5 h-5 text-[var(--color-accent-tertiary)]" />
+                  <span className="font-medium">Standard &lt;img&gt; Tag</span>
+                </div>
+                <ul className="text-sm text-[var(--color-text-secondary)] space-y-1">
+                  <li>✗ No format optimization</li>
+                  <li>✗ No lazy loading</li>
+                  <li>✗ Causes layout shift (CLS)</li>
+                  <li>✗ Full image downloaded</li>
+                </ul>
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Font Optimization */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-          <h3 className="text-xl font-bold mb-4">🔤 Font Optimization (next/font)</h3>
-          
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <h4 className="font-semibold mb-2">Benefits:</h4>
-              <ul className="text-sm space-y-2">
-                <li className="flex items-center gap-2">
-                  <span className="text-green-500">✅</span>
-                  Self-hosted (no external requests)
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-green-500">✅</span>
-                  Zero layout shift (FOUT)
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-green-500">✅</span>
-                  Automatic CSS size-adjust
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-green-500">✅</span>
-                  Preloaded at build time
-                </li>
-              </ul>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="bg-[var(--color-bg-card)] rounded-2xl p-6 border border-[var(--color-border)] mb-8"
+        >
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 rounded-xl bg-[var(--color-accent-secondary)]/10">
+              <Type className="w-6 h-6 text-[var(--color-accent-secondary)]" />
             </div>
-            
-            <div className="bg-slate-100 rounded-lg p-4">
-              <p className="text-sm text-gray-600 mb-2">Font in use:</p>
-              <p className="text-2xl font-sans">Geist Sans (Variable)</p>
-              <p className="text-lg font-mono mt-2">Geist Mono (Code)</p>
-              <p className="text-xs text-gray-500 mt-4">
-                Check Network tab - no fonts.googleapis.com requests!
-              </p>
+            <div>
+              <h2 className="text-xl font-bold">Font Optimization</h2>
+              <p className="text-sm text-[var(--color-text-secondary)]">Using next/font for zero layout shift</p>
             </div>
           </div>
-        </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Space Grotesk */}
+            <div className="p-4 rounded-xl bg-[var(--color-bg-tertiary)]">
+              <p className="text-xs text-[var(--color-text-muted)] mb-2">Display Font</p>
+              <p className="text-2xl font-bold" style={{ fontFamily: 'var(--font-display)' }}>
+                Space Grotesk
+              </p>
+              <p className="text-sm mt-2" style={{ fontFamily: 'var(--font-display)' }}>
+                The quick brown fox jumps over the lazy dog
+              </p>
+              <code className="text-xs text-[var(--color-accent-secondary)] mt-2 block">
+                --font-display
+              </code>
+            </div>
+
+            {/* Inter */}
+            <div className="p-4 rounded-xl bg-[var(--color-bg-tertiary)]">
+              <p className="text-xs text-[var(--color-text-muted)] mb-2">Body Font</p>
+              <p className="text-2xl font-bold" style={{ fontFamily: 'var(--font-body)' }}>
+                Inter
+              </p>
+              <p className="text-sm mt-2" style={{ fontFamily: 'var(--font-body)' }}>
+                The quick brown fox jumps over the lazy dog
+              </p>
+              <code className="text-xs text-[var(--color-accent-secondary)] mt-2 block">
+                --font-body
+              </code>
+            </div>
+
+            {/* JetBrains Mono */}
+            <div className="p-4 rounded-xl bg-[var(--color-bg-tertiary)]">
+              <p className="text-xs text-[var(--color-text-muted)] mb-2">Mono Font</p>
+              <p className="text-2xl font-bold" style={{ fontFamily: 'var(--font-mono)' }}>
+                JetBrains Mono
+              </p>
+              <p className="text-sm mt-2" style={{ fontFamily: 'var(--font-mono)' }}>
+                const code = &apos;beautiful&apos;;
+              </p>
+              <code className="text-xs text-[var(--color-accent-secondary)] mt-2 block">
+                --font-mono
+              </code>
+            </div>
+          </div>
+
+          <div className="mt-6 p-4 rounded-xl bg-[var(--color-accent-primary)]/10 border border-[var(--color-accent-primary)]/30">
+            <h4 className="font-semibold mb-2 text-[var(--color-accent-primary)]">
+              ✓ Zero Layout Shift
+            </h4>
+            <p className="text-sm text-[var(--color-text-secondary)]">
+              Fonts are downloaded at build time and self-hosted. CSS <code>size-adjust</code> ensures 
+              the fallback font matches the web font metrics, preventing any text reflow when fonts load.
+            </p>
+          </div>
+        </motion.div>
 
         {/* Code Examples */}
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
-          {/* Image Code */}
-          <div className="bg-slate-900 rounded-xl p-6 text-white">
-            <h3 className="font-bold mb-4">📝 next/image Usage:</h3>
-            <pre className="text-sm overflow-x-auto text-green-300">
-{`import Image from 'next/image'
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="bg-[var(--color-bg-card)] rounded-2xl p-6 border border-[var(--color-border)]"
+        >
+          <h3 className="font-semibold mb-4">Implementation Code</h3>
+          
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <p className="text-sm text-[var(--color-text-muted)] mb-2">next/image usage:</p>
+              <pre className="bg-[var(--color-bg-tertiary)] rounded-xl p-4 overflow-x-auto text-sm">
+                <code>{`import Image from 'next/image';
 
-// Fixed dimensions
 <Image
   src="/hero.jpg"
   alt="Hero"
   width={800}
   height={400}
-  priority
-/>
+  placeholder="blur"
+  priority // for above-fold
+/>`}</code>
+              </pre>
+            </div>
+            <div>
+              <p className="text-sm text-[var(--color-text-muted)] mb-2">next/font usage:</p>
+              <pre className="bg-[var(--color-bg-tertiary)] rounded-xl p-4 overflow-x-auto text-sm">
+                <code>{`import { Inter } from 'next/font/google';
 
-// Fill container
-<div className="relative h-64">
-  <Image
-    src="/hero.jpg"
-    alt="Hero"
-    fill
-    className="object-cover"
-  />
-</div>`}
-            </pre>
-          </div>
-
-          {/* Font Code */}
-          <div className="bg-slate-900 rounded-xl p-6 text-white">
-            <h3 className="font-bold mb-4">📝 next/font Usage:</h3>
-            <pre className="text-sm overflow-x-auto text-green-300">
-{`// app/layout.tsx
-import { Geist, Geist_Mono } from 'next/font/google'
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const inter = Inter({
   subsets: ['latin'],
-})
+  variable: '--font-body',
+  display: 'swap',
+});
 
-export default function Layout({ children }) {
-  return (
-    <html>
-      <body className={geistSans.variable}>
-        {children}
-      </body>
-    </html>
-  )
-}`}
-            </pre>
-          </div>
-        </div>
-
-        {/* Core Web Vitals */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-6 text-white">
-          <h3 className="text-xl font-bold mb-4">📊 Core Web Vitals Impact</h3>
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="bg-white/20 rounded-lg p-4">
-              <p className="text-2xl font-bold">LCP</p>
-              <p className="text-sm">Largest Contentful Paint</p>
-              <p className="text-xs mt-2 opacity-75">priority prop for above-fold images</p>
-            </div>
-            <div className="bg-white/20 rounded-lg p-4">
-              <p className="text-2xl font-bold">CLS</p>
-              <p className="text-sm">Cumulative Layout Shift</p>
-              <p className="text-xs mt-2 opacity-75">Width/height prevents shift</p>
-            </div>
-            <div className="bg-white/20 rounded-lg p-4">
-              <p className="text-2xl font-bold">FID</p>
-              <p className="text-sm">First Input Delay</p>
-              <p className="text-xs mt-2 opacity-75">Lazy loading reduces JS</p>
+// In layout.tsx
+<html className={inter.variable}>`}</code>
+              </pre>
             </div>
           </div>
-        </div>
-
-        {/* Back Link */}
-        <div className="mt-8 text-center">
-          <a href="/" className="text-orange-600 hover:underline">
-            ← Back to Home
-          </a>
-        </div>
+        </motion.div>
       </div>
     </div>
-  )
+  );
 }

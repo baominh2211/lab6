@@ -1,79 +1,75 @@
-'use client'
+'use client';
 
-/**
- * Exercise 2: Theme Toggle (Client Component)
- * 
- * This component demonstrates:
- * - 'use client' directive
- * - useState hook (only works in Client Components)
- * - Event handlers (onClick)
- * - Browser APIs
- */
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Sun, Moon, Monitor } from 'lucide-react';
 
-import { useState, useEffect } from 'react'
+type ThemeMode = 'light' | 'dark' | 'system';
 
 export default function ThemeToggle() {
-  const [isDark, setIsDark] = useState(false)
+  const [mode, setMode] = useState<ThemeMode>('dark');
+  const [mounted, setMounted] = useState(false);
 
-  // This runs in the BROWSER only
   useEffect(() => {
-    console.log('ThemeToggle useEffect - runs in BROWSER')
-    
-    // Check initial theme from localStorage
-    const savedTheme = localStorage.getItem('dashboard-theme')
-    if (savedTheme === 'dark') {
-      setIsDark(true)
+    setMounted(true);
+    const stored = localStorage.getItem('dashboard-theme') as ThemeMode | null;
+    if (stored) {
+      setMode(stored);
     }
-  }, [])
+  }, []);
 
-  const toggleTheme = () => {
-    setIsDark(!isDark)
-    localStorage.setItem('dashboard-theme', !isDark ? 'dark' : 'light')
-  }
+  useEffect(() => {
+    if (!mounted) return;
+    
+    localStorage.setItem('dashboard-theme', mode);
+    
+    if (mode === 'system') {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+    } else {
+      document.documentElement.setAttribute('data-theme', mode);
+    }
+  }, [mode, mounted]);
+
+  if (!mounted) return null;
+
+  const options: { value: ThemeMode; icon: typeof Sun; label: string }[] = [
+    { value: 'light', icon: Sun, label: 'Light' },
+    { value: 'dark', icon: Moon, label: 'Dark' },
+    { value: 'system', icon: Monitor, label: 'System' },
+  ];
 
   return (
-    <div className="space-y-4">
-      {/* Theme Toggle Button */}
-      <button
-        onClick={toggleTheme}
-        className={`px-6 py-3 rounded-lg font-semibold transition-all ${
-          isDark
-            ? 'bg-slate-800 text-white hover:bg-slate-700'
-            : 'bg-yellow-400 text-yellow-900 hover:bg-yellow-500'
-        }`}
-      >
-        {isDark ? '🌙 Dark Mode' : '☀️ Light Mode'}
-      </button>
-
-      {/* Client Component Info */}
-      <div className={`rounded-lg p-4 border ${
-        isDark 
-          ? 'bg-slate-800 text-white border-slate-700' 
-          : 'bg-white border-gray-200'
-      }`}>
-        <p className={`text-sm ${isDark ? 'text-slate-300' : 'text-gray-600'}`}>
-          🔌 <strong>Client Component</strong>
-        </p>
-        <ul className={`text-xs mt-2 space-y-1 ${isDark ? 'text-slate-400' : 'text-gray-500'}`}>
-          <li>• Uses useState hook</li>
-          <li>• Has onClick handler</li>
-          <li>• Accesses localStorage</li>
-          <li>• JavaScript runs in browser</li>
-        </ul>
+    <div className="bg-[var(--color-bg-card)] rounded-2xl p-6 border border-[var(--color-border)]">
+      <h3 className="text-lg font-semibold mb-4">Theme Settings</h3>
+      <p className="text-[var(--color-text-secondary)] text-sm mb-4">
+        This is a Client Component using useState to manage theme state.
+      </p>
+      
+      <div className="flex gap-2">
+        {options.map(({ value, icon: Icon, label }) => (
+          <motion.button
+            key={value}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setMode(value)}
+            className={`flex-1 flex flex-col items-center gap-2 p-4 rounded-xl border transition-all ${
+              mode === value
+                ? 'bg-[var(--color-accent-primary)]/10 border-[var(--color-accent-primary)] text-[var(--color-accent-primary)]'
+                : 'bg-[var(--color-bg-tertiary)] border-transparent hover:border-[var(--color-border)]'
+            }`}
+          >
+            <Icon className="w-5 h-5" />
+            <span className="text-sm font-medium">{label}</span>
+          </motion.button>
+        ))}
       </div>
 
-      {/* Preview Panel */}
-      <div className={`rounded-lg p-6 transition-all ${
-        isDark 
-          ? 'bg-slate-900 text-white' 
-          : 'bg-slate-100 text-slate-900'
-      }`}>
-        <h4 className="font-semibold mb-2">Preview Panel</h4>
-        <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-          This panel changes based on the theme toggle above.
-          The state is managed by React on the client side.
-        </p>
+      <div className="mt-4 p-3 rounded-lg bg-[var(--color-bg-tertiary)]">
+        <code className="text-xs text-[var(--color-text-secondary)]">
+          Current: <span className="text-[var(--color-accent-secondary)]">{mode}</span>
+        </code>
       </div>
     </div>
-  )
+  );
 }

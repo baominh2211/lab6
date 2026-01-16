@@ -1,141 +1,249 @@
-/**
- * Exercise 2: Dashboard Page (Server Component with async data fetching)
- * 
- * This page demonstrates:
- * - Server Component with async/await
- * - Direct data fetching without useEffect
- * - Embedding Client Component inside Server Component
- * - Simulated API delay with setTimeout
- */
+import { Metadata } from 'next';
+import { Suspense } from 'react';
+import { 
+  Users, 
+  Eye, 
+  TrendingUp, 
+  Clock, 
+  FileText,
+  Target,
+  Sparkles,
+} from 'lucide-react';
+import ThemeToggle from '@/components/ThemeToggle';
+import { delay, formatNumber } from '@/lib/utils';
 
-import ThemeToggle from '@/components/ThemeToggle'
+export const metadata: Metadata = {
+  title: 'Dashboard',
+  description: 'Hybrid rendering dashboard demonstrating Server and Client Components.',
+};
 
-// Simulate fetching user profile from API
-async function getUserProfile() {
-  // Simulate network delay (2 seconds)
-  await new Promise((resolve) => setTimeout(resolve, 2000))
-  
-  return {
-    name: 'Hoang Bao Minh',
-    email: 'hoangbaominh@example.com',
-    role: 'Full-Stack Developer',
-    avatar: '👨‍💻',
-    stats: {
-      projects: 12,
-      commits: 847,
-      reviews: 156,
-    }
-  }
-}
+// Server Component: Fetches data on the server
+async function UserProfile() {
+  // Simulate API delay
+  await delay(1000);
 
-// This is an ASYNC Server Component
-// No 'use client' = Server Component
-export default async function DashboardPage() {
-  // This runs on SERVER only - can access database directly
-  console.log('DashboardPage rendered on SERVER')
-  
-  // Fetch data directly - no useEffect needed!
-  const user = await getUserProfile()
+  const profile = {
+    name: 'Tran Vinh Khiem',
+    email: 'khiem@uit.edu.vn',
+    role: 'MSc. Lecturer',
+    avatar: 'TK',
+  };
 
   return (
-    <div className="p-8">
+    <div className="bg-[var(--color-bg-card)] rounded-2xl p-6 border border-[var(--color-border)]">
+      <div className="flex items-center gap-4 mb-4">
+        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--color-accent-primary)] to-[var(--color-accent-secondary)] flex items-center justify-center text-xl font-bold text-[var(--color-bg-primary)]">
+          {profile.avatar}
+        </div>
+        <div>
+          <h2 className="text-xl font-bold">{profile.name}</h2>
+          <p className="text-[var(--color-text-secondary)]">{profile.email}</p>
+          <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 text-xs rounded-full bg-[var(--color-accent-purple)]/20 text-[var(--color-accent-purple)]">
+            {profile.role}
+          </span>
+        </div>
+      </div>
+      <p className="text-xs text-[var(--color-text-muted)] p-2 rounded-lg bg-[var(--color-bg-tertiary)]">
+        🖥️ This is a <strong>Server Component</strong> - data fetched on server with 1s delay simulation.
+      </p>
+    </div>
+  );
+}
+
+// Loading skeleton for UserProfile
+function ProfileSkeleton() {
+  return (
+    <div className="bg-[var(--color-bg-card)] rounded-2xl p-6 border border-[var(--color-border)] animate-pulse">
+      <div className="flex items-center gap-4 mb-4">
+        <div className="w-16 h-16 rounded-2xl bg-[var(--color-bg-tertiary)]" />
+        <div className="flex-1">
+          <div className="h-6 bg-[var(--color-bg-tertiary)] rounded w-40 mb-2" />
+          <div className="h-4 bg-[var(--color-bg-tertiary)] rounded w-32 mb-2" />
+          <div className="h-5 bg-[var(--color-bg-tertiary)] rounded w-24" />
+        </div>
+      </div>
+      <div className="h-8 bg-[var(--color-bg-tertiary)] rounded" />
+    </div>
+  );
+}
+
+// Server Component: Activity List
+async function RecentActivity() {
+  await delay(1500);
+
+  const activities = [
+    { id: 1, action: 'Published new blog post', time: '2 hours ago', type: 'create' },
+    { id: 2, action: 'Updated dashboard metrics', time: '4 hours ago', type: 'update' },
+    { id: 3, action: 'Completed API integration', time: 'Yesterday', type: 'complete' },
+    { id: 4, action: 'Added new team member', time: '2 days ago', type: 'create' },
+  ];
+
+  return (
+    <div className="bg-[var(--color-bg-card)] rounded-2xl p-6 border border-[var(--color-border)]">
+      <h3 className="text-lg font-semibold mb-4">Recent Activity</h3>
+      <div className="space-y-4">
+        {activities.map((activity) => (
+          <div key={activity.id} className="flex items-start gap-3">
+            <div className={`w-2 h-2 rounded-full mt-2 ${
+              activity.type === 'create' ? 'bg-[var(--color-accent-primary)]' :
+              activity.type === 'update' ? 'bg-[var(--color-accent-secondary)]' :
+              'bg-[var(--color-accent-purple)]'
+            }`} />
+            <div className="flex-1">
+              <p className="text-sm">{activity.action}</p>
+              <p className="text-xs text-[var(--color-text-muted)]">{activity.time}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <p className="text-xs text-[var(--color-text-muted)] mt-4 p-2 rounded-lg bg-[var(--color-bg-tertiary)]">
+        🖥️ Server Component - fetched with 1.5s delay.
+      </p>
+    </div>
+  );
+}
+
+function ActivitySkeleton() {
+  return (
+    <div className="bg-[var(--color-bg-card)] rounded-2xl p-6 border border-[var(--color-border)] animate-pulse">
+      <div className="h-6 bg-[var(--color-bg-tertiary)] rounded w-32 mb-4" />
+      {[1, 2, 3, 4].map((i) => (
+        <div key={i} className="flex items-start gap-3 mb-4">
+          <div className="w-2 h-2 rounded-full mt-2 bg-[var(--color-bg-tertiary)]" />
+          <div className="flex-1">
+            <div className="h-4 bg-[var(--color-bg-tertiary)] rounded w-3/4 mb-1" />
+            <div className="h-3 bg-[var(--color-bg-tertiary)] rounded w-20" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Stats Card Component (inline to avoid icon serialization issue)
+function StatsCard({ 
+  title, 
+  value, 
+  change, 
+  changeType, 
+  iconType, 
+  colorType,
+  index = 0 
+}: { 
+  title: string; 
+  value: string; 
+  change: string; 
+  changeType: 'positive' | 'negative';
+  iconType: 'eye' | 'users' | 'file' | 'target';
+  colorType: 'primary' | 'secondary' | 'tertiary' | 'purple';
+  index?: number;
+}) {
+  const IconComponent = iconType === 'eye' ? Eye : 
+                       iconType === 'users' ? Users : 
+                       iconType === 'file' ? FileText : Target;
+  
+  const colorClasses = {
+    primary: { bg: 'bg-[var(--color-accent-primary)]/10', text: 'text-[var(--color-accent-primary)]' },
+    secondary: { bg: 'bg-[var(--color-accent-secondary)]/10', text: 'text-[var(--color-accent-secondary)]' },
+    tertiary: { bg: 'bg-[var(--color-accent-tertiary)]/10', text: 'text-[var(--color-accent-tertiary)]' },
+    purple: { bg: 'bg-[var(--color-accent-purple)]/10', text: 'text-[var(--color-accent-purple)]' },
+  };
+  
+  const colors = colorClasses[colorType];
+
+  return (
+    <div className="bg-[var(--color-bg-card)] rounded-2xl p-6 border border-[var(--color-border)] hover:border-[var(--color-border-light)] transition-all">
+      <div className="flex items-start justify-between mb-4">
+        <div className={`p-3 rounded-xl ${colors.bg}`}>
+          <IconComponent className={`w-5 h-5 ${colors.text}`} />
+        </div>
+        <span className={`text-xs font-medium px-2 py-1 rounded-full ${
+          changeType === 'positive'
+            ? 'bg-green-500/10 text-green-500'
+            : 'bg-red-500/10 text-red-500'
+        }`}>
+          {change}
+        </span>
+      </div>
+      <div>
+        <p className="text-[var(--color-text-muted)] text-sm mb-1">{title}</p>
+        <p className={`text-2xl font-bold ${colors.text}`}>{value}</p>
+      </div>
+    </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <div className="max-w-7xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <span className="inline-block px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-medium mb-4">
-          Exercise 2: App Router - Server + Client Components
-        </span>
-        <h1 className="text-3xl font-bold">Dashboard Overview</h1>
-        <p className="text-gray-600 mt-2">
-          Server Component với async data fetching + Client Component cho interactivity
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-accent-secondary)]/10 border border-[var(--color-accent-secondary)]/30 mb-4">
+          <Sparkles className="w-4 h-4 text-[var(--color-accent-secondary)]" />
+          <span className="text-sm font-medium text-[var(--color-accent-secondary)]">
+            Exercise 2: Hybrid Rendering
+          </span>
+        </div>
+        <h1 className="text-3xl font-bold mb-2">Dashboard Overview</h1>
+        <p className="text-[var(--color-text-secondary)]">
+          Demonstrating Server Components and Client Components working together.
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-8">
-        {/* User Profile - Server Component Data */}
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="text-5xl">{user.avatar}</div>
-            <div>
-              <h2 className="text-xl font-bold">{user.name}</h2>
-              <p className="text-gray-500">{user.email}</p>
-              <p className="text-sm text-blue-600">{user.role}</p>
-            </div>
-          </div>
+      {/* Stats Grid */}
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <StatsCard title="Total Visits" value="124,892" change="+12.5%" changeType="positive" iconType="eye" colorType="primary" index={0} />
+        <StatsCard title="Unique Users" value="48,234" change="+8.2%" changeType="positive" iconType="users" colorType="secondary" index={1} />
+        <StatsCard title="Page Views" value="892,456" change="+23.1%" changeType="positive" iconType="file" colorType="tertiary" index={2} />
+        <StatsCard title="Conversion" value="3.24%" change="-0.4%" changeType="negative" iconType="target" colorType="purple" index={3} />
+      </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-4">
-            <div className="bg-blue-50 rounded-lg p-4 text-center">
-              <p className="text-2xl font-bold text-blue-600">{user.stats.projects}</p>
-              <p className="text-sm text-gray-500">Projects</p>
-            </div>
-            <div className="bg-green-50 rounded-lg p-4 text-center">
-              <p className="text-2xl font-bold text-green-600">{user.stats.commits}</p>
-              <p className="text-sm text-gray-500">Commits</p>
-            </div>
-            <div className="bg-purple-50 rounded-lg p-4 text-center">
-              <p className="text-2xl font-bold text-purple-600">{user.stats.reviews}</p>
-              <p className="text-sm text-gray-500">Reviews</p>
-            </div>
-          </div>
+      {/* Main Content Grid */}
+      <div className="grid lg:grid-cols-3 gap-6">
+        {/* Left Column - Server Components with Suspense */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* User Profile - Server Component with streaming */}
+          <Suspense fallback={<ProfileSkeleton />}>
+            <UserProfile />
+          </Suspense>
 
-          {/* Server Component Badge */}
-          <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-3">
-            <p className="text-sm text-blue-800">
-              🖥️ <strong>Server Component</strong> - Data fetched on server with 2s delay
-            </p>
-          </div>
+          {/* Recent Activity - Server Component with streaming */}
+          <Suspense fallback={<ActivitySkeleton />}>
+            <RecentActivity />
+          </Suspense>
         </div>
 
-        {/* Settings Panel - Contains Client Component */}
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <h3 className="text-lg font-bold mb-4">⚙️ Settings</h3>
-          
-          {/* Client Component embedded in Server Component */}
+        {/* Right Column - Client Component */}
+        <div className="space-y-6">
+          {/* Theme Toggle - Client Component with useState */}
           <ThemeToggle />
 
-          {/* Code Example */}
-          <div className="mt-6 bg-slate-900 rounded-lg p-4 text-white">
-            <p className="text-xs text-slate-400 mb-2">Composition Pattern:</p>
-            <pre className="text-xs text-green-300 overflow-x-auto">
-{`// page.tsx (Server Component)
-import ThemeToggle from './ThemeToggle'
-
-export default async function Page() {
-  const data = await fetchData() // Server
-  
-  return (
-    <div>
-      <h1>{data.title}</h1>
-      <ThemeToggle /> {/* Client */}
-    </div>
-  )
-}`}
-            </pre>
-          </div>
-        </div>
-      </div>
-
-      {/* Architecture Diagram */}
-      <div className="mt-8 bg-slate-800 rounded-xl p-6 text-white">
-        <h3 className="text-lg font-bold mb-4">🏗️ Component Architecture</h3>
-        <div className="grid md:grid-cols-3 gap-4">
-          <div className="bg-green-900/50 rounded-lg p-4">
-            <p className="font-bold text-green-400">layout.tsx</p>
-            <p className="text-sm text-green-300">Server Component</p>
-            <p className="text-xs text-slate-400 mt-2">Static sidebar, no JS to client</p>
-          </div>
-          <div className="bg-blue-900/50 rounded-lg p-4">
-            <p className="font-bold text-blue-400">page.tsx</p>
-            <p className="text-sm text-blue-300">Server Component (async)</p>
-            <p className="text-xs text-slate-400 mt-2">Fetches user data on server</p>
-          </div>
-          <div className="bg-purple-900/50 rounded-lg p-4">
-            <p className="font-bold text-purple-400">ThemeToggle.tsx</p>
-            <p className="text-sm text-purple-300">Client Component</p>
-            <p className="text-xs text-slate-400 mt-2">useState, onClick, localStorage</p>
+          {/* Architecture Explanation */}
+          <div className="bg-[var(--color-bg-card)] rounded-2xl p-6 border border-[var(--color-border)]">
+            <h3 className="text-lg font-semibold mb-4">Architecture Pattern</h3>
+            <div className="space-y-3 text-sm">
+              <div className="p-3 rounded-xl bg-[var(--color-accent-secondary)]/10 border border-[var(--color-accent-secondary)]/30">
+                <p className="font-medium text-[var(--color-accent-secondary)] mb-1">Server Components</p>
+                <p className="text-[var(--color-text-secondary)]">
+                  Layout, Profile, Activity - rendered on server, zero client JS
+                </p>
+              </div>
+              <div className="p-3 rounded-xl bg-[var(--color-accent-purple)]/10 border border-[var(--color-accent-purple)]/30">
+                <p className="font-medium text-[var(--color-accent-purple)] mb-1">Client Components</p>
+                <p className="text-[var(--color-text-secondary)]">
+                  Theme Toggle - uses useState, interactivity required
+                </p>
+              </div>
+              <div className="p-3 rounded-xl bg-[var(--color-accent-primary)]/10 border border-[var(--color-accent-primary)]/30">
+                <p className="font-medium text-[var(--color-accent-primary)] mb-1">Suspense Streaming</p>
+                <p className="text-[var(--color-text-secondary)]">
+                  Profile & Activity stream in as they load
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
